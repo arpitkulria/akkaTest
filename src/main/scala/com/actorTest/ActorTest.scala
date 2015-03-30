@@ -7,8 +7,20 @@ import akka.actor.ActorRef
 import scala.concurrent.Await
 import akka.util.Timeout
 
+/**
+ * case class for holding msg
+ *
+ * @author knoldus
+ *
+ */
 case class msgTest(msg: String)
 
+/**
+ * parent class
+ *
+ * @author knoldus
+ *
+ */
 class ParentAkka(ChildAkka: ActorRef) extends Actor with ActorLogging {
   def receive = {
     case msgTest(msgString) => {
@@ -21,6 +33,12 @@ class ParentAkka(ChildAkka: ActorRef) extends Actor with ActorLogging {
   }
 }
 
+/**
+ * child class
+ *
+ * @author knoldus
+ *
+ */
 class ChildAkka extends Actor with ActorLogging {
   def receive = {
     case msgTest(msgString) => {
@@ -35,7 +53,7 @@ object ActorTest extends App {
   val child = system.actorOf(Props[ChildAkka], "child")
   val parent = system.actorOf(Props(new ParentAkka(child)), "parent")
   val op = parent ? msgTest("hello")
-  println((Await.result(op, timeoutcustom.duration)).toString())
+  println((Await.result(op, timeoutcustom.duration)))
 
   system.shutdown
 }

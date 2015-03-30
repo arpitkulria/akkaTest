@@ -3,10 +3,40 @@ import akka.actor.{ ActorSystem, ActorLogging, Actor, Props }
 import scala.io.Source
 import akka.actor.ActorRef
 
+
+
+/**
+ * case class for holding one line from text file
+ * 
+ * @param line
+ * @param nol
+ */
 case class OneLineFromFile(line: String, nol: Int)
+
+/**
+ * case class to store array of words of one line
+ * 
+ * @param arrayOfWords
+ * @param nol
+ */
 case class UseOnThePlaceOfMessage(arrayOfWords: Array[String], nol: Int)
+
+
+/**
+ * case class for holding wordcount
+ * 
+ * @author knoldus
+ *
+ */
 case class ClassUsedInParent(wc: Int, nol: Int)
 
+
+
+/**
+ * parent class
+ * 
+ * @param child
+ */
 class Parent(child: ActorRef) extends Actor with ActorLogging {
 
   var wordcount = 0
@@ -20,11 +50,15 @@ class Parent(child: ActorRef) extends Actor with ActorLogging {
       }
     case ClassUsedInParent(op, nol) => {
       ans += 1
-      if (ans == nol) { println(op) }
+      if (ans == nol) { println("No of words in file = "+op) }
     }
   }
 }
 
+
+/**
+ * child class
+ */
 class Child extends Actor with ActorLogging {
   var wordcount = 0
   def receive = {
